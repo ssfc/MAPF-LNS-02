@@ -116,6 +116,5 @@ int main(int argc, char** argv)
 // cmake .. ; make
 // Run
 // ./lns -m ../random-32-32-20.map -a ../random-32-32-20-random-1.scen -o test.csv -k 50 -t 3
-
-
+// build/lns -m ../../movingai-benchmark/mapf-map/random-32-32-20.map -a ../../movingai-benchmark/scen-random/random-32-32-20-random-1.scen -o test.csv -k 50 -t 3
 
