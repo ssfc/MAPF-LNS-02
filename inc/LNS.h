@@ -102,6 +102,9 @@ private:
     // I/O
     std::string to_csv_path = "../result/experimental_results.csv";
 
+    // other info
+    string repo_link = "https://github.com/ssfc/MAPF-LNS-02/tree/to_csv";
+
     bool runEECBS();
     bool runCBS();
     bool runPP();
