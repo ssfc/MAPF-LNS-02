@@ -2,5 +2,5 @@
 analysis
 bin
 cmake*
-exp*
+#exp*
 debug
