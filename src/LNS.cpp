@@ -238,7 +238,7 @@ bool LNS::run()
     to_csv << get_cpu_name() << ","; // device
     to_csv << init_algo_name << ","; // high level method, replace with initial plan algorithm name
     to_csv << replan_algo_name << ","; // low level method, replace with replan algorithm name
-    to_csv << disappear_at_goal << ","; // disappear or not
+    to_csv << 0 << ","; // disappear or not, 原版默认不消失
     to_csv << "NULL" << ","; // CAT break-tie
     to_csv << rand_seed << ","; // random seed
 
