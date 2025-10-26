@@ -69,7 +69,7 @@ def main():
         "map_file": args.map_file,
         "agent_file": args.agent_file,
         "device": "12490F",
-        "disappear_at_goal": 1,
+        "disappear_at_goal": 0,
     }
 
     # 不同方法的附加条件与样式
