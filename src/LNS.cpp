@@ -150,13 +150,6 @@ bool LNS::run()
         to_csv << "NULL" << ","; // CAT break-tie
         to_csv << rand_seed << ","; // random seed
 
-
-        std::cout << "Planning successful! " << std::endl;
-        if(screen==2)
-        {
-            std::cout << "LNS iters: " << iteration_stats.size() << std::endl;
-        }
-
         std::cout << "sum_individual_cost: " << "INF" << std::endl;
         to_csv << -1 << ","; // 如果无解, cost就是-1
 
