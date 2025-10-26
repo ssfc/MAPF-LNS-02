@@ -99,6 +99,8 @@ private:
     vector<double> destroy_weights;
     int selected_neighbor;
 
+    bool test_initial_solution = false;
+
     // I/O
     std::string to_csv_path = "../result/experimental_results.csv";
 
