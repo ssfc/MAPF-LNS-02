@@ -109,3 +109,13 @@ int main(int argc, char** argv)
 	return 0;
 
 }
+
+
+// Test on ubuntu platform:
+// Build
+// cmake .. ; make
+// Run
+// ./lns -m ../random-32-32-20.map -a ../random-32-32-20-random-1.scen -o test.csv -k 50 -t 3
+
+
+
