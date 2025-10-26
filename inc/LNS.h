@@ -99,6 +99,7 @@ private:
     vector<double> destroy_weights;
     int selected_neighbor;
 
+    int rand_seed = -1;
     bool test_initial_solution = false;
 
     // I/O
