@@ -226,15 +226,15 @@ bool LNS::run()
 
     to_csv << -1 << ","; // id
 
-    std::filesystem::path filePath(instance.map_fname);
+    std::filesystem::path filePath(instance.getInstanceName());
     std::string map_name = filePath.filename().string(); // 提取文件名部分
     to_csv << map_name << ","; // instance
 
-    std::filesystem::path agentPath(instance.agent_fname);
+    std::filesystem::path agentPath(instance.getInstanceName());
     std::string agent_file = agentPath.filename().string(); // 提取文件名部分
     to_csv << agent_file << ","; // agent file
 
-    to_csv << instance.num_of_agents << ","; // num of agents
+    to_csv << instance.getDefaultNumberOfAgents() << ","; // num of agents
     to_csv << get_cpu_name() << ","; // device
     to_csv << init_algo_name << ","; // high level method, replace with initial plan algorithm name
     to_csv << replan_algo_name << ","; // low level method, replace with replan algorithm name
