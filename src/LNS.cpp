@@ -134,7 +134,7 @@ bool LNS::run()
 
         to_csv << -1 << ","; // id
 
-        std::filesystem::path filePath(instance.getInstanceName());
+        std::filesystem::path filePath(instance.getMapFile());
         std::string map_name = filePath.filename().string(); // 提取文件名部分
         to_csv << map_name << ","; // instance
 
@@ -275,7 +275,7 @@ bool LNS::run()
 
     to_csv << -1 << ","; // id
 
-    std::filesystem::path filePath(instance.getInstanceName());
+    std::filesystem::path filePath(instance.getMapFile());
     std::string map_name = filePath.filename().string(); // 提取文件名部分
     to_csv << map_name << ","; // instance
 
