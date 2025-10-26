@@ -157,8 +157,8 @@ bool LNS::run()
             std::cout << "LNS iters: " << iteration_stats.size() << std::endl;
         }
 
-        std::cout << "sum_individual_cost: " << sum_of_costs << std::endl;
-        to_csv << sum_of_costs << ","; // cost
+        std::cout << "sum_individual_cost: " << "INF" << std::endl;
+        to_csv << -1 << ","; // 如果无解, cost就是-1
 
         std::cout << "runtime (s): " << runtime << std::endl;
         to_csv << runtime << ",";
