@@ -451,7 +451,7 @@ bool LNS::runEECBS()
     ecbs.setSavingStats(false);
     double w;
     if (iteration_stats.empty())
-        w = 2; // initial run
+        w = 2; // initial run, 论文中就是这么设置参数的
     else
         w = 1.1; // replan
     ecbs.setHighLevelSolver(high_level_solver_type::EES, w);
