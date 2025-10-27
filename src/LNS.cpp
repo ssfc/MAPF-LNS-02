@@ -404,6 +404,12 @@ bool LNS::getInitialSolution()
         succ = runEECBS();
     else if (init_algo_name == "PP")
         succ = runPP();
+    else if (init_algo_name == "leftBottomManhattan")
+    {
+        // cout << 516 << endl;
+        succ = run_left_bottom_manhattan();
+        // cout << 517 << endl;
+    }
     else if (init_algo_name == "PIBT")
         succ = runPIBT();
     else if (init_algo_name == "PPS")
@@ -617,6 +623,140 @@ bool LNS::runPP()
         return false;
     }
 }
+
+
+// 优先排布起点最靠近左下角的agent
+bool LNS::run_left_bottom_manhattan()
+{
+    // cout << "left Bottom plan" << endl;
+
+    // cout << "agent 0 start from: " << agents[0].path_planner.start_location << endl;
+    // cout << "agent 1 start from: " << agents[1].path_planner.start_location << endl;
+
+    /*
+    cout << "agent 0 distance from left bottom: " <<
+        std::abs(agents[0].path_planner.start_location % instance.num_of_cols)
+    + (instance.num_of_cols - std::abs(agents[0].path_planner.start_location / instance.num_of_cols)) << endl;
+    */
+
+    // 获取邻域中的代理列表
+    // comment: 邻域也是所有agents的一整套路径规划
+    // comment: 初始状态也是一个邻域
+    auto ordered_agents = neighbor.agents;
+
+    // --------- ✅ 新增排序逻辑 ---------
+    // 左下角在 grid 坐标系中的位置 (0, num_of_rows - 1)
+    // 假设 instance.num_of_cols 和 instance.num_of_rows 分别是列和行数
+    std::sort(ordered_agents.begin(), ordered_agents.end(),
+        [&](int a, int b)
+        {
+            int ax = agents[a].path_planner.start_location % instance.num_of_cols;
+            int ay = agents[a].path_planner.start_location / instance.num_of_cols;
+            int bx = agents[b].path_planner.start_location % instance.num_of_cols;
+            int by = agents[b].path_planner.start_location / instance.num_of_cols;
+
+            // 距离左下角 (0, num_of_rows - 1)
+            int da = std::abs(ax) + std::abs(instance.num_of_rows - 1 - ay);
+            int db = std::abs(bx) + std::abs(instance.num_of_rows - 1 - by);
+
+            return da < db; // 距离小的（更靠近左下）排前面
+        });
+    // -----------------------------------
+
+
+    int remaining_agents = (int)ordered_agents.size();
+    auto iter = ordered_agents.begin();
+    // 初始化总代价
+    neighbor.sum_of_costs = 0;
+
+    // 计算剩余的时间
+    runtime = ((fsec)(Time::now() - start_time)).count();
+    double remain_time = time_limit - runtime; // time limit
+    if (!iteration_stats.empty()) // replan
+        remain_time = min(remain_time, replan_time_limit);
+
+    // cout << 719 << endl;
+
+    auto time = Time::now();
+    // 开始为每个代理规划路径，直到所有代理都处理完或时间耗尽。
+    // 一个一个规划, 避开path table中的
+    while (iter != ordered_agents.end() && ((fsec)(Time::now() - time)).count() < remain_time)
+    {
+        int id = *iter;
+        if (screen >= 3)
+        {
+            cout << "Remaining agents = " << remaining_agents <<
+                 ", remaining time = " << time_limit - runtime << " seconds. " << endl
+                 << "Agent " << agents[id].id << endl;
+        }
+
+        // vertex collision, edge collision, target collision all inside.
+        if(disappear_at_goal)
+        {
+            // 在考虑时间（timestep）和空间（location）约束的情况下为单个agent找到最短的不冲突路径，特别适合多智能体（如MAPF）路径规划。
+            agents[id].path = agents[id].path_planner.find_optimal_path_disappear(path_table);
+        }
+        else
+        {
+            // 在给定路径约束表（path table）的情况下，为一个智能体（agent）找到一条最短、不与其他 agent 路径冲突的路径。
+            agents[id].path = agents[id].path_planner.find_optimal_path(path_table);
+        }
+
+        // 如果路径为空，表示无法找到合法路径，算法终止。
+        if (agents[id].path.empty())
+        {
+            break;
+        }
+
+        // 如果新的总代价不小于旧的，提前终止规划。
+        neighbor.sum_of_costs += (int)agents[id].path.size() - 1;
+        if (neighbor.sum_of_costs >= neighbor.old_sum_of_costs)
+        {
+            break;
+        }
+
+        path_table.insert_path(agents[id].id, agents[id].path);
+        remaining_agents--;
+        ++iter;
+    }
+
+    // cout << 762 << endl;
+
+    // 接受新路径或回滚. old sum of costs初始为极大值
+    if (iter == ordered_agents.end() && neighbor.sum_of_costs < neighbor.old_sum_of_costs) // accept new paths
+    {
+        return true;
+    }
+    else // 回滚已修改的路径，并恢复旧路径。
+    {
+        if (iter != ordered_agents.end())
+            num_of_failures++;
+        auto iter_j = ordered_agents.begin();
+        while (iter_j != iter)
+        {
+            int a = *iter_j;
+            path_table.delete_path(agents[a].id, agents[a].path);
+            ++iter_j;
+        }
+
+        if (!neighbor.old_paths.empty())
+        {
+            iter_j = neighbor.agents.begin();
+            for (int i = 0; i < (int)neighbor.agents.size(); i++)
+            {
+                int a = *iter_j;
+                agents[a].path = neighbor.old_paths[i];
+                path_table.insert_path(agents[a].id, agents[a].path);
+                ++iter_j;
+            }
+
+            neighbor.sum_of_costs = neighbor.old_sum_of_costs;
+        }
+
+        return false;
+    }
+}
+
 
 bool LNS::runPPS(){
     auto shuffled_agents = neighbor.agents;

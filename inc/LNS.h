@@ -111,6 +111,7 @@ private:
     bool runEECBS();
     bool runCBS();
     bool runPP();
+    bool run_left_bottom_manhattan(); // 优先排布起点最靠近左下角的agent
     bool runPIBT();
     bool runPPS();
     bool runWinPIBT();
