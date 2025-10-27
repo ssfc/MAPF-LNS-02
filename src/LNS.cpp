@@ -663,96 +663,68 @@ bool LNS::run_left_bottom_manhattan()
         });
     // -----------------------------------
 
-
-    int remaining_agents = (int)ordered_agents.size();
-    auto iter = ordered_agents.begin();
-    // 初始化总代价
+    auto shuffled_agents = ordered_agents;
+    // std::random_shuffle(shuffled_agents.begin(), shuffled_agents.end());
+    if (screen >= 2) {
+        for (auto id : shuffled_agents)
+            cout << id << "(" << agents[id].path_planner.my_heuristic[agents[id].path_planner.start_location] <<
+                "->" << agents[id].path.size() - 1 << "), ";
+        cout << endl;
+    }
+    int remaining_agents = (int)shuffled_agents.size();
+    auto p = shuffled_agents.begin();
     neighbor.sum_of_costs = 0;
-
-    // 计算剩余的时间
     runtime = ((fsec)(Time::now() - start_time)).count();
-    double remain_time = time_limit - runtime; // time limit
+    double T = time_limit - runtime; // time limit
     if (!iteration_stats.empty()) // replan
-        remain_time = min(remain_time, replan_time_limit);
-
-    // cout << 719 << endl;
-
+        T = min(T, replan_time_limit);
     auto time = Time::now();
-    // 开始为每个代理规划路径，直到所有代理都处理完或时间耗尽。
-    // 一个一个规划, 避开path table中的
-    while (iter != ordered_agents.end() && ((fsec)(Time::now() - time)).count() < remain_time)
+    while (p != shuffled_agents.end() && ((fsec)(Time::now() - time)).count() < T)
     {
-        int id = *iter;
+        int id = *p;
         if (screen >= 3)
-        {
             cout << "Remaining agents = " << remaining_agents <<
                  ", remaining time = " << time_limit - runtime << " seconds. " << endl
                  << "Agent " << agents[id].id << endl;
-        }
-
-        // vertex collision, edge collision, target collision all inside.
-        if(disappear_at_goal)
-        {
-            // 在考虑时间（timestep）和空间（location）约束的情况下为单个agent找到最短的不冲突路径，特别适合多智能体（如MAPF）路径规划。
-            agents[id].path = agents[id].path_planner.find_optimal_path_disappear(path_table);
-        }
-        else
-        {
-            // 在给定路径约束表（path table）的情况下，为一个智能体（agent）找到一条最短、不与其他 agent 路径冲突的路径。
-            agents[id].path = agents[id].path_planner.find_optimal_path(path_table);
-        }
-
-        // 如果路径为空，表示无法找到合法路径，算法终止。
+        agents[id].path = agents[id].path_planner.findOptimalPath(path_table);
         if (agents[id].path.empty())
         {
             break;
         }
-
-        // 如果新的总代价不小于旧的，提前终止规划。
         neighbor.sum_of_costs += (int)agents[id].path.size() - 1;
         if (neighbor.sum_of_costs >= neighbor.old_sum_of_costs)
-        {
             break;
-        }
-
-        path_table.insert_path(agents[id].id, agents[id].path);
+        path_table.insertPath(agents[id].id, agents[id].path);
         remaining_agents--;
-        ++iter;
+        ++p;
     }
-
-    // cout << 762 << endl;
-
-    // 接受新路径或回滚. old sum of costs初始为极大值
-    if (iter == ordered_agents.end() && neighbor.sum_of_costs < neighbor.old_sum_of_costs) // accept new paths
+    if (p == shuffled_agents.end() && neighbor.sum_of_costs < neighbor.old_sum_of_costs) // accept new paths
     {
         return true;
     }
-    else // 回滚已修改的路径，并恢复旧路径。
+    else // stick to old paths
     {
-        if (iter != ordered_agents.end())
+        if (p != shuffled_agents.end())
             num_of_failures++;
-        auto iter_j = ordered_agents.begin();
-        while (iter_j != iter)
+        auto p2 = shuffled_agents.begin();
+        while (p2 != p)
         {
-            int a = *iter_j;
-            path_table.delete_path(agents[a].id, agents[a].path);
-            ++iter_j;
+            int a = *p2;
+            path_table.deletePath(agents[a].id, agents[a].path);
+            ++p2;
         }
-
         if (!neighbor.old_paths.empty())
         {
-            iter_j = neighbor.agents.begin();
+            p2 = neighbor.agents.begin();
             for (int i = 0; i < (int)neighbor.agents.size(); i++)
             {
-                int a = *iter_j;
+                int a = *p2;
                 agents[a].path = neighbor.old_paths[i];
-                path_table.insert_path(agents[a].id, agents[a].path);
-                ++iter_j;
+                path_table.insertPath(agents[a].id, agents[a].path);
+                ++p2;
             }
-
             neighbor.sum_of_costs = neighbor.old_sum_of_costs;
         }
-
         return false;
     }
 }
