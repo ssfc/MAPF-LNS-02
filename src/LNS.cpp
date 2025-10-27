@@ -122,6 +122,9 @@ bool LNS::run()
         // 只测初始解
         if (test_initial_solution)
         {
+            cout << "Initial solution cost = " << initial_sum_of_costs << ", "
+                 << "runtime = " << initial_solution_runtime << endl;
+
             std::ofstream to_csv(to_csv_path, std::ios::app);  // 以追加模式打开文件
             if (!to_csv.is_open()) {
                 std::cerr << "Error opening csv!" << std::endl;
@@ -153,11 +156,11 @@ bool LNS::run()
                 std::cout << "LNS iters: " << iteration_stats.size() << std::endl;
             }
 
-            std::cout << "sum_individual_cost: " << sum_of_costs << std::endl;
-            to_csv << sum_of_costs << ","; // cost
+            std::cout << "sum_individual_cost: " << initial_sum_of_costs << std::endl;
+            to_csv << initial_sum_of_costs << ","; // cost
 
-            std::cout << "runtime (s): " << runtime << std::endl;
-            to_csv << runtime << ",";
+            std::cout << "runtime (s): " << initial_solution_runtime << std::endl;
+            to_csv << initial_solution_runtime << ",";
             to_csv << test_initial_solution << ","; // comment, 这里换成test initial solution
             to_csv << repo_link << ","; // method source
 
