@@ -89,8 +89,8 @@ def main():
         #("CBSDepthBeam2", {"high level planner": "CBSFlowBeam-whoenig", "comment": 2}, {"marker": "*"}),
         #("CBSDepthBeam8", {"high level planner": "CBSFlowBeam-whoenig", "comment": 8}, {"marker": "v"}),
         #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 1}, {"marker": "^"}),
-        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
-        ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
+        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1}, {"marker": "^"}),
+        #("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
         #("multiPP", {"high level planner": "multiPP"}, {"marker": "v"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
         #("leftTopManhattan", {"high level planner": "leftTopManhattan", "low level planner": "1", "comment": 1}, {"marker": "^"}),
@@ -101,8 +101,8 @@ def main():
 
     for name, extra_filters, _style in [
         #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 0}, {"marker": "^"}),
-        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
-        ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
+        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1}, {"marker": "^"}),
+        #("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "1", "comment": 0}, {"marker": "^"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
         #("PbyLength", {"high level planner": "PbyLength", "low level planner": "1"}, {"marker": "^"}),
