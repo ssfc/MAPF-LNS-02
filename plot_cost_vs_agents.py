@@ -101,8 +101,8 @@ def main():
 
     for name, extra_filters, _style in [
         #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 0}, {"marker": "^"}),
-        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1}, {"marker": "^"}),
-        #("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
+        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 0, "time_limit": 60}, {"marker": "^"}),
+        ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 0, "time_limit": 60}, {"marker": "^"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "1", "comment": 0}, {"marker": "^"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
         #("PbyLength", {"high level planner": "PbyLength", "low level planner": "1"}, {"marker": "^"}),
