@@ -100,7 +100,7 @@ private:
     int selected_neighbor;
 
     int rand_seed = -1;
-    bool test_initial_solution = false;
+    bool test_initial_solution = true;
 
     // I/O
     std::string to_csv_path = "../result/experimental_results.csv";

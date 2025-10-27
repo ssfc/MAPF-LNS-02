@@ -179,6 +179,8 @@ bool LNS::run()
             to_csv << neighbor_size << ","; // 原lowLevelExpanded, 用neighborSize取代内容
 
             to_csv << time_limit << "\n"; // 设定的最长runtime
+
+            return true;
         }
     }
     else
