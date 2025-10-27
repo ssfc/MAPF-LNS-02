@@ -170,7 +170,9 @@ bool LNS::run()
 
         to_csv << destroy_strategy << ","; // 原highLevelExpanded, 用destoryStrategy取代内容
 
-        to_csv << neighbor_size << "\n"; // 原lowLevelExpanded, 用neighborSize取代内容
+        to_csv << neighbor_size << ","; // 原lowLevelExpanded, 用neighborSize取代内容
+
+        to_csv << time_limit << "\n"; // 设定的最长runtime
 
         return false; // terminate because no initial solution is found
     }
@@ -318,8 +320,9 @@ bool LNS::run()
 
     to_csv << destroy_strategy << ","; // 原highLevelExpanded, 用destoryStrategy取代内容
 
-    to_csv << neighbor_size << "\n"; // 原lowLevelExpanded, 用neighborSize取代内容
+    to_csv << neighbor_size << ","; // 原lowLevelExpanded, 用neighborSize取代内容
 
+    to_csv << time_limit << "\n"; // 设定的最长runtime
 
     return true;
 }
