@@ -1,8 +1,8 @@
-instance,PP,EECBS,PbyLength,leftBottomAndLength
+instance,PP,EECBS,PPS,leftBottomAndLength
 empty-32-32-random-1.scen,
 empty-32-32-random-2.scen,
 empty-32-32-random-3.scen,
-random-32-32-20-random-1.scen,51.00% (204/400),78.00% (312/400)
+random-32-32-20-random-1.scen,51.00% (204/400),78.00% (312/400),97.75% (391/400)
 random-32-32-20-random-2.scen,
 random-32-32-20-random-3.scen,
 random-32-32-10-random-1.scen,
