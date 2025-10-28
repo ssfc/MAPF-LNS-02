@@ -91,7 +91,7 @@ def main():
         #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 1}, {"marker": "^"}),
         ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
         ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
-        #("PPS", {"high level planner": "PPS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "*"}),
+        ("PPS", {"high level planner": "PPS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "*"}),
         #("multiPP", {"high level planner": "multiPP"}, {"marker": "v"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
         #("leftTopManhattan", {"high level planner": "leftTopManhattan", "low level planner": "1", "comment": 1}, {"marker": "^"}),
