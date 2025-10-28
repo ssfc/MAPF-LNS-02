@@ -62,14 +62,14 @@ def main():
         print(f"未找到 CSV 文件：{args.csv}", file=sys.stderr)
         sys.exit(1)
 
-    df = pd.read_csv(args.csv)
+    df = pd.read_csv(args.csv, low_memory=False)
 
     # 公共筛选条件
     base_filters = {
         "map_file": args.map_file,
         "agent_file": args.agent_file,
         "device": "12490F",
-        "disappear_at_goal": 1,
+        "disappear_at_goal": 0,
     }
 
     # 不同方法的附加条件与样式
@@ -79,7 +79,7 @@ def main():
         #("CBSDepthKNN", {"high level planner": "CBSDepthKNN"}, {"marker": "^"}),
         #("CBSDepthKNNSparse", {"high level planner": "CBSDepthKNNSparse"}, {"marker": "v"}),
         #("CBSDepthSelectConflict", {"high level planner": "CBSDepthSelectConflict"}, {"marker": "^"}),
-        #("CBSDepthSecond", {"high level planner": "CBSDepthSecondPriority"}, {"marker": "^"}),
+        # ("CBSDepthSecond", {"high level planner": "CBSDepthSecondPriority"}, {"marker": "^"}),
         # ("CBSDepthRandomAvoid", {"high level planner": "CBSDepthRandomAvoid"}, {"marker": "^"}),
         #("CBSDepthIncrementalUpdateOrder", {"high level planner": "CBSDepthIncrementalUpdateOrder"}, {"marker": "^"}),
         #("CBSDepthLazyAvoidBuzy", {"high level planner": "CBSDepthLazyAvoidBusy"}, {"marker": "v"}),
@@ -88,9 +88,14 @@ def main():
         #("CBSDepthLengthOrderReverse", {"high level planner": "CBSDepthLengthOrderReverse"}, {"marker": "^"}),
         #("CBSDepthBeam2", {"high level planner": "CBSFlowBeam-whoenig", "comment": 2}, {"marker": "*"}),
         #("CBSDepthBeam8", {"high level planner": "CBSFlowBeam-whoenig", "comment": 8}, {"marker": "v"}),
-        ("PP", {"high level planner": "PP", "low level planner": "1"}, {"marker": "^"}),
+        #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 1}, {"marker": "^"}),
+        ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
+        ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
+        ("PPS", {"high level planner": "PPS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "*"}),
         #("multiPP", {"high level planner": "multiPP"}, {"marker": "v"}),
-        ("leftBottom", {"high level planner": "leftBottom", "low level planner": "1"}, {"marker": "v"}),
+        #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 0}, {"marker": "^"}),
+        #("leftTopManhattan", {"high level planner": "leftTopManhattan", "low level planner": "1", "comment": 1}, {"marker": "^"}),
+        #("leftBottom", {"high level planner": "leftBottom", "low level planner": "1"}, {"marker": "v"}),
         #("PbyLength", {"high level planner": "PbyLength"}, {"marker": "v"}),
         #("PbyConfNum", {"high level planner": "PbyConflictNum"}, {"marker": "v"}),
     )
@@ -132,8 +137,10 @@ def main():
         )
 
     plt.legend()
+
     active_names = [name for name, _, _ in methods if name in prepared]
     plt.title("Comparison: " + ", ".join(active_names), fontsize=12)
+
     plt.xlabel("num_agents (x-axis)", fontsize=11)
     plt.ylabel("runtime (y-axis)", fontsize=11)
     plt.grid(True, linestyle="--", alpha=0.4)
@@ -151,3 +158,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Run
+#  python .\plot_runtime_vs_agents.py --map-file random-32-32-20.map --agent-file random-32-32-20-random-1.scen
