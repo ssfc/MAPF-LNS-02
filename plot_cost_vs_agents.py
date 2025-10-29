@@ -90,6 +90,7 @@ def main():
         #("CBSDepthBeam8", {"high level planner": "CBSFlowBeam-whoenig", "comment": 8}, {"marker": "v"}),
         #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 1}, {"marker": "^"}),
         ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
+        ("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
         ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
         ("PPS", {"high level planner": "PPS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "*"}),
         #("multiPP", {"high level planner": "multiPP"}, {"marker": "v"}),
@@ -103,6 +104,7 @@ def main():
     for name, extra_filters, _style in [
         #("PP", {"high level planner": "PP", "low level planner": "1", "comment": 0}, {"marker": "^"}),
         ("PP", {"high level planner": "PP", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
+        ("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
         ("EECBS", {"high level planner": "EECBS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "^"}),
         ("PPS", {"high level planner": "PPS", "low level planner": "PP", "comment": 1, "time_limit": 10}, {"marker": "*"}),
         #("leftBottomManhattan", {"high level planner": "leftBottomManhattan", "low level planner": "1", "comment": 0}, {"marker": "^"}),
