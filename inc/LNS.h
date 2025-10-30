@@ -75,6 +75,7 @@ private:
     double time_limit;
     double replan_time_limit; // time limit for replanning
     string init_algo_name;
+    int max_initial_iterations = INT_MAX; // 求解初始解的循环次数
     string replan_algo_name;
     int screen;
     destroy_heuristic destroy_strategy = RANDOMWALK;
