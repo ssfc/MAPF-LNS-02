@@ -855,17 +855,8 @@ bool LNS::run_left_bottom_search()
             }
 
             // vertex collision, edge collision, target collision all inside.
-            if(disappear_at_goal)
-            {
-                // 在考虑时间（timestep）和空间（location）约束的情况下为单个agent找到最短的不冲突路径，特别适合多智能体（如MAPF）路径规划。
-                current_paths[id] = agents[id].path_planner.find_optimal_path_disappear(curr_path_table);
-            }
-            else
-            {
-                // 在给定路径约束表（path table）的情况下，为一个智能体（agent）找到一条最短、不与其他 agent 路径冲突的路径。
-                current_paths[id] = agents[id].path_planner.find_optimal_path(curr_path_table);
-            }
-
+            // 在考虑时间（timestep）和空间（location）约束的情况下为单个agent找到最短的不冲突路径，特别适合多智能体（如MAPF）路径规划。
+            current_paths[id] = agents[id].path_planner.findOptimalPath(curr_path_table);
             // 如果路径为空，表示无法找到合法路径，算法终止。
             if (current_paths[id].empty())
             {
