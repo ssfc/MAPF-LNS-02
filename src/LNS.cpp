@@ -879,7 +879,7 @@ bool LNS::run_left_bottom_search()
                 break;
             }
 
-            curr_path_table.insert_path(id, current_paths[id]);
+            curr_path_table.insertPath(id, current_paths[id]);
             remaining_agents--;
             ++iter;
         }
