@@ -730,6 +730,202 @@ bool LNS::run_left_bottom_manhattan()
 }
 
 
+
+// 优先排布起点最靠近左下角的agent
+bool LNS::run_left_bottom_search()
+{
+    // cout << "left Bottom plan" << endl;
+
+    // cout << "agent 0 start from: " << agents[0].path_planner.start_location << endl;
+    // cout << "agent 1 start from: " << agents[1].path_planner.start_location << endl;
+
+    /*
+    cout << "agent 0 distance from left bottom: " <<
+        std::abs(agents[0].path_planner.start_location % instance.num_of_cols)
+    + (instance.num_of_cols - std::abs(agents[0].path_planner.start_location / instance.num_of_cols)) << endl;
+    */
+
+    // 获取邻域中的代理列表
+    // comment: 邻域也是所有agents的一整套路径规划
+    // comment: 初始状态也是一个邻域
+    auto ordered_agents = neighbor.agents;
+
+    // --------- ✅ 新增排序逻辑 ---------
+    // 左下角在 grid 坐标系中的位置 (0, num_of_rows - 1)
+    // 假设 instance.num_of_cols 和 instance.num_of_rows 分别是列和行数
+    std::sort(ordered_agents.begin(), ordered_agents.end(),
+        [&](int a, int b)
+        {
+            int ax = agents[a].path_planner.start_location % instance.num_of_cols;
+            int ay = agents[a].path_planner.start_location / instance.num_of_cols;
+            int bx = agents[b].path_planner.start_location % instance.num_of_cols;
+            int by = agents[b].path_planner.start_location / instance.num_of_cols;
+
+            // 距离左下角 (0, num_of_rows - 1)
+            int da = std::abs(ax) + std::abs(instance.num_of_rows - 1 - ay);
+            int db = std::abs(bx) + std::abs(instance.num_of_rows - 1 - by);
+
+            return da < db; // 距离小的（更靠近左下）排前面
+        });
+    // -----------------------------------
+
+    auto orginal_agents = ordered_agents;
+
+    /*
+    std::vector<int> path = {1, 4, 2, 3};
+
+    // 按字典序排列，先排序确保从最小排列开始
+    std::sort(path.begin(), path.end());
+
+    do {
+        for (int v : path) std::cout << v << " ";
+        std::cout << "\n";
+    } while (std::next_permutation(path.begin(), path.end()));
+    */
+
+    vector<int> iter_permutations(ordered_agents.size());
+    for (int i=0;i<iter_permutations.size();i++)
+    {
+        iter_permutations[i] = i;
+    }
+
+    /*
+    cout << "ordered agents: ";
+    for (auto ele : ordered_agents)
+    {
+        cout << ele << " ";
+    }
+    cout << endl;
+
+    std::next_permutation(iter_permutations.begin(), iter_permutations.end());
+
+    cout << "ordered agents: ";
+    for (auto ele : iter_permutations)
+    {
+        cout << ordered_agents[ele] << " ";
+    }
+    cout << endl;
+    */
+
+    int best_soc = INT_MAX;
+    vector<Path> best_paths;
+
+    auto time = Time::now();
+    // 计算剩余的时间
+    runtime = ((fsec)(Time::now() - start_time)).count();
+    double remain_time = time_limit - runtime; // time limit
+
+    for (int j=0;j<max_initial_iterations;j++) {
+    // for (int j=0;j<300;j++) {
+        // cout << "j " << j << endl;
+        // 获取邻域中的代理列表
+        // comment: 邻域也是所有agents的一整套路径规划
+        // comment: 初始状态也是一个邻域
+
+        int remaining_agents = (int)ordered_agents.size();
+        auto iter = ordered_agents.begin();
+        // 初始化总代价
+        int soc = 0;
+
+        PathTable curr_path_table(instance.map_size);
+
+        // 这一轮规划的path
+        vector<Path> current_paths(neighbor.agents.size());
+
+        // 计算剩余的时间
+        runtime = ((fsec)(Time::now() - start_time)).count();
+        remain_time = time_limit - runtime; // time limit
+        if (!iteration_stats.empty()) // replan
+            remain_time = min(remain_time, replan_time_limit);
+
+        // cout << 719 << endl;
+
+        time = Time::now();
+        // 开始为每个代理规划路径，直到所有代理都处理完或时间耗尽。
+        // 一个一个规划, 避开path table中的
+        // while (iter != shuffled_agents.end())
+        while (iter != ordered_agents.end() && ((fsec)(Time::now() - time)).count() < remain_time)
+        {
+            int id = *iter;
+            if (screen >= 3)
+            {
+                cout << "Remaining agents = " << remaining_agents <<
+                     ", remaining time = " << time_limit - runtime << " seconds. " << endl
+                     << "Agent " << id << endl;
+            }
+
+            // vertex collision, edge collision, target collision all inside.
+            if(disappear_at_goal)
+            {
+                // 在考虑时间（timestep）和空间（location）约束的情况下为单个agent找到最短的不冲突路径，特别适合多智能体（如MAPF）路径规划。
+                current_paths[id] = agents[id].path_planner.find_optimal_path_disappear(curr_path_table);
+            }
+            else
+            {
+                // 在给定路径约束表（path table）的情况下，为一个智能体（agent）找到一条最短、不与其他 agent 路径冲突的路径。
+                current_paths[id] = agents[id].path_planner.find_optimal_path(curr_path_table);
+            }
+
+            // 如果路径为空，表示无法找到合法路径，算法终止。
+            if (current_paths[id].empty())
+            {
+                break;
+            }
+
+            // 如果新的总代价不小于旧的，提前终止规划。
+            soc += current_paths[id].size() - 1;
+            if (soc >= best_soc)
+            {
+                break;
+            }
+
+            curr_path_table.insert_path(id, current_paths[id]);
+            remaining_agents--;
+            ++iter;
+        }
+
+        // cout << 762 << endl;
+
+        // 接受新路径或回滚. old sum of costs初始为极大值
+        if (iter == ordered_agents.end()) // accept new paths
+        {
+            if (soc < best_soc) {
+                cout << "improve from " << best_soc << " to " << soc << endl;
+                for (int i=0;i<current_paths.size();i++) {
+                    agents[i].path = current_paths[i];
+                }
+
+                neighbor.sum_of_costs = soc;
+                best_soc = soc;
+                best_paths = current_paths;
+                neighbor.old_sum_of_costs = best_soc;
+
+                return true; // 如果不打算改进, 那么找到了就可以结束搜索。
+            }
+            else {
+                // cout << "iter " << " not improve. This soc: " << soc << endl;
+            }
+        }
+
+        std::next_permutation(iter_permutations.begin(), iter_permutations.end());
+
+        // cout << "ordered agents: ";
+        for (int i=0;i<orginal_agents.size();i++)
+        {
+            ordered_agents[i] = orginal_agents[iter_permutations[i]];
+        }
+    }
+
+    if (best_paths.empty()) {
+        return false;
+    }
+
+
+    return true;
+}
+
+
+
 bool LNS::runPPS(){
     auto shuffled_agents = neighbor.agents;
     std::random_shuffle(shuffled_agents.begin(), shuffled_agents.end());
