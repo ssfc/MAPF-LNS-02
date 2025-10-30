@@ -410,6 +410,12 @@ bool LNS::getInitialSolution()
         succ = run_left_bottom_manhattan();
         // cout << 517 << endl;
     }
+    else if (init_algo_name == "leftBottomSearch")
+    {
+        // cout << 516 << endl;
+        succ = run_left_bottom_search();
+        // cout << 517 << endl;
+    }
     else if (init_algo_name == "PIBT")
         succ = runPIBT();
     else if (init_algo_name == "PPS")
