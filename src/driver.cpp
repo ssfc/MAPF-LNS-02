@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 // cmake .. ; make
 // Run
 // ./lns -m ../random-32-32-20.map -a ../random-32-32-20-random-1.scen -o test.csv -k 50 -t 3
-// ./lns -m ../../movingai-benchmark/mapf-map/random-32-32-20.map -a ../../movingai-benchmark/scen-random/random-32-32-20-random-1.scen -o test.csv -k 50 -t 3
+// ./lns -m ../../movingai-benchmark/mapf-map/random-32-32-20.map -a ../../movingai-benchmark/scen-random/random-32-32-20-random-1.scen -o test.csv -k 50 -t 3 --initAlgo EECBS
 
 // Test on windows
 // 因为变量_MT和windows不兼容，所以无法运行在windows平台上。
