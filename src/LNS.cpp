@@ -1414,6 +1414,26 @@ void LNS::writePathsToFile(string file_name) const
     }
     output.close();
 }
+
+
+
+void LNS::write_path_for_viz(string file_name) const
+{
+    std::ofstream output;
+    output.open(file_name);
+    // header
+    output << agents.size() << endl;
+
+    for (const auto &agent : agents)
+    {
+        for (const auto &state : agent.path)
+            output << state.location << ",";
+        output << endl;
+    }
+    output.close();
+}
+
+
 /*
 bool LNS::generateNeighborByStart()
 {

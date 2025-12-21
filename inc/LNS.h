@@ -66,6 +66,7 @@ public:
     void writeIterStatsToFile(string file_name) const;
     void writeResultToFile(string file_name) const;
     void writePathsToFile(string file_name) const;
+    void write_path_for_viz(string file_name) const;
     string getSolverName() const { return "LNS(" + init_algo_name + ";" + replan_algo_name + ")"; }
 private:
     int num_neighbor_sizes = 1; //4; // so the neighbor size could be 2, 4, 8, 16
