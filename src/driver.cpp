@@ -80,6 +80,7 @@ int main(int argc, char** argv)
         if (vm.count("stats"))
             lns.writeIterStatsToFile(vm["stats"].as<string>());
         // lns.writePathsToFile("path.txt");
+		lns.write_path_for_viz("path.txt");
     }
     else if (vm["solver"].as<string>() == "A-BCBS") // anytime BCBS(w, 1)
     {
