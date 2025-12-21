@@ -1428,8 +1428,8 @@ void LNS::write_path_for_viz(string file_name) const
     log << "map_file=" << instance.getMapFile() << "\n";
     log << "solver=planner\n";
     log << "solved=" << 1 << "\n"; // 能到这一步, 自然是求解成功的
-    log << "soc=" << get_sum_of_costs(solution) << "\n";
-    log << "soc_lb=" << -1 << "\n"; // 不明白, 这是理论最短距离吗
+    log << "soc=" << sum_of_costs << "\n";
+    log << "soc_lb=" << sum_of_costs_lowerbound << "\n"; // 不明白, 这是理论最短距离吗
     log << "makespan=" << get_makespan(solution) << "\n";
     log << "makespan_lb=" << get_makespan_lower_bound(ins, dist_table) << "\n";
     log << "sum_of_loss=" << get_sum_of_loss(solution) << "\n";
