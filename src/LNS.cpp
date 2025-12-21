@@ -1435,10 +1435,10 @@ void LNS::write_path_for_viz(string file_name) const
     log << "sum_of_loss=" << get_sum_of_loss(solution) << "\n";
     log << "sum_of_loss_lb=" << get_sum_of_costs_lower_bound(ins, dist_table)
         << "\n";
-    log << "comp_time=" << comp_time_ms << "\n";
+    log << "comp_time=" << initial_solution_runtime << "\n";
     log << "seed=" << rand_seed << "\n";
     // if (log_short) return;
-    
+
     log << "starts=";
     for (size_t i = 0; i < agents.size(); ++i) {
         auto k = ins.starts[i]->index;
