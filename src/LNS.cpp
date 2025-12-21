@@ -1438,16 +1438,19 @@ void LNS::write_path_for_viz(string file_name) const
     log << "comp_time=" << comp_time_ms << "\n";
     log << "seed=" << rand_seed << "\n";
     // if (log_short) return;
+    
     log << "starts=";
-    for (size_t i = 0; i < ins.N; ++i) {
+    for (size_t i = 0; i < agents.size(); ++i) {
         auto k = ins.starts[i]->index;
         log << "(" << get_x(k) << "," << get_y(k) << "),";
     }
+
     log << "\ngoals=";
-    for (size_t i = 0; i < ins.N; ++i) {
+    for (size_t i = 0; i < agents.size(); ++i) {
         auto k = ins.goals[i]->index;
         log << "(" << get_x(k) << "," << get_y(k) << "),";
     }
+
     log << "\nsolution=\n";
     for (size_t t = 0; t < solution.size(); ++t) {
         log << t << ":";
