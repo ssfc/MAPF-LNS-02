@@ -1437,7 +1437,7 @@ void LNS::write_path_for_viz(string file_name) const
         << "\n";
     log << "comp_time=" << comp_time_ms << "\n";
     log << "seed=" << rand_seed << "\n";
-    if (log_short) return;
+    // if (log_short) return;
     log << "starts=";
     for (size_t i = 0; i < ins.N; ++i) {
         auto k = ins.starts[i]->index;
