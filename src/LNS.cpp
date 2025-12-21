@@ -1423,7 +1423,7 @@ void LNS::write_path_for_viz(string file_name) const
     auto get_x = [&](int k) { return k % ins.G.width; };
     auto get_y = [&](int k) { return k / ins.G.width; };
     std::ofstream log;
-    log.open(output_name, std::ios::out);
+    log.open(file_name, std::ios::out);
     log << "agents=" << agents.size() << "\n";
     log << "map_file=" << map_recorded_name << "\n";
     log << "solver=planner\n";
