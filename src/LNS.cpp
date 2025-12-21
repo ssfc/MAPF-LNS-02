@@ -1420,8 +1420,8 @@ void LNS::writePathsToFile(string file_name) const
 void LNS::write_path_for_viz(string file_name) const
 {
     // log for visualizer
-    auto get_x = [&](int k) { return k % ins.G.width; };
-    auto get_y = [&](int k) { return k / ins.G.width; };
+    auto get_x = [&](int k) { return k % instance.getCols(); };
+    auto get_y = [&](int k) { return k / instance.getCols(); };
     std::ofstream log;
     log.open(file_name, std::ios::out);
     log << "agents=" << agents.size() << "\n";
