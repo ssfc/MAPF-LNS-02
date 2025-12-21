@@ -1425,7 +1425,7 @@ void LNS::write_path_for_viz(string file_name) const
     std::ofstream log;
     log.open(file_name, std::ios::out);
     log << "agents=" << agents.size() << "\n";
-    log << "map_file=" << map_recorded_name << "\n";
+    log << "map_file=" << instance.getMapFile() << "\n";
     log << "solver=planner\n";
     log << "solved=" << !solution.empty() << "\n";
     log << "soc=" << get_sum_of_costs(solution) << "\n";
