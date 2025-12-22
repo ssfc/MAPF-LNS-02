@@ -1451,7 +1451,7 @@ void LNS::write_path_for_viz(string file_name) const
     }
 
     log << "\nsolution=\n";
-    for (size_t t = 0; t < solution.size(); ++t) {
+    for (size_t t = 0; t < solution.size(); ++t) {  // 这里应该是makespan
         log << t << ":";
         auto C = solution[t];
         for (auto v : C) {
