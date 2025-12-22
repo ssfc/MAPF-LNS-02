@@ -1441,13 +1441,13 @@ void LNS::write_path_for_viz(string file_name) const
 
     log << "starts=";
     for (size_t i = 0; i < agents.size(); ++i) {
-        auto k = ins.starts[i]->index;
+        auto k = instance.getStarts()[i];
         log << "(" << get_x(k) << "," << get_y(k) << "),";
     }
 
     log << "\ngoals=";
     for (size_t i = 0; i < agents.size(); ++i) {
-        auto k = ins.goals[i]->index;
+        auto k = instance.getGoals()[i];
         log << "(" << get_x(k) << "," << get_y(k) << "),";
     }
 
