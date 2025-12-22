@@ -1429,8 +1429,18 @@ void LNS::write_path_for_viz(string file_name) const
         }
     }
 
+    // 第i个时间步, 第j个agent所在的位置
     vector<vector<int>> solution(makespan, vector<int>(agents.size(), 0));
-
+    for (int i=0; i<agents.size(); i++)
+    {
+        for (int j=0;j<makespan;j++)
+        {
+            if (i < agents[i].path.size())
+            {
+                
+            }
+        }
+    }
 
     // log for visualizer
     auto get_x = [&](int k) { return k % instance.getCols(); };
