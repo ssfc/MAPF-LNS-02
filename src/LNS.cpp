@@ -1435,9 +1435,9 @@ void LNS::write_path_for_viz(string file_name) const
     {
         for (int j=0;j<makespan;j++)
         {
-            if (i < agents[i].path.size())
+            if (i < agents[j].path.size())
             {
-                
+                solution[i][j] = agents[j].path[i].location;
             }
         }
     }
@@ -1478,7 +1478,7 @@ void LNS::write_path_for_viz(string file_name) const
         log << t << ":";
         auto C = solution[t];
         for (auto v : C) {
-            log << "(" << get_x(v->index) << "," << get_y(v->index) << "),";
+            log << "(" << get_x(v) << "," << get_y(v) << "),";
         }
         log << "\n";
     }
