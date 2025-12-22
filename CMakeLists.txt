@@ -17,7 +17,7 @@ file(GLOB SOURCES "src/*.cpp" "src/CBS/*.cpp" "src/PIBT/*.cpp")
 add_executable(lns ${SOURCES})
 
 # Find Boost
-find_package(Boost REQUIRED COMPONENTS program_options system filesystem)
+find_package(Boost REQUIRED COMPONENTS program_options system filesystem serialization)
 
 # Find Eigen3 for PIBT
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)

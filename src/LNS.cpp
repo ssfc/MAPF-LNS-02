@@ -4,6 +4,14 @@
 #include <queue>
 
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>  // 序列化std::vector
+#include <boost/serialization/unordered_map.hpp> // 序列化unordered_map
+#include <boost/serialization/utility.hpp> // 序列化std::pair
+
+
+
 
 std::string get_cpu_name() {
 #ifdef _WIN32
