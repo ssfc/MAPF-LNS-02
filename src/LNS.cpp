@@ -1431,7 +1431,7 @@ void LNS::write_path_for_viz(string file_name) const
 
     vector<vector<int>> solution(makespan, vector<int>(agents.size(), 0));
 
-    
+
     // log for visualizer
     auto get_x = [&](int k) { return k % instance.getCols(); };
     auto get_y = [&](int k) { return k / instance.getCols(); };
@@ -1443,8 +1443,8 @@ void LNS::write_path_for_viz(string file_name) const
     log << "solved=" << 1 << "\n"; // 能到这一步, 自然是求解成功的
     log << "soc=" << sum_of_costs << "\n";
     log << "soc_lb=" << sum_of_costs_lowerbound << "\n"; // 不明白, 这是理论最短距离吗
-    log << "makespan=" << get_makespan(solution) << "\n";
-    log << "makespan_lb=" << get_makespan_lower_bound(ins, dist_table) << "\n";
+    log << "makespan=" << makespan << "\n";
+    log << "makespan_lb=" << -1 << "\n"; // 先弄-1吧
     log << "sum_of_loss=" << -1 << "\n"; // 先弄-1吧
     log << "sum_of_loss_lb=" << -1 << "\n";
     log << "comp_time=" << initial_solution_runtime << "\n";
