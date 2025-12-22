@@ -1419,6 +1419,17 @@ void LNS::writePathsToFile(string file_name) const
 
 void LNS::write_path_for_viz(string file_name) const
 {
+
+    vector<vector<int>> solution;
+    int makespan = 0;
+    for (const auto & agent : agents)
+    {
+        if (makespan < agent.path.size())
+        {
+            makespan = agent.path.size();
+        }
+    }
+
     // log for visualizer
     auto get_x = [&](int k) { return k % instance.getCols(); };
     auto get_y = [&](int k) { return k / instance.getCols(); };
