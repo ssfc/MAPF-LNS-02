@@ -45,6 +45,11 @@ struct Neighbor
 class LNS
 {
 public:
+    struct Record {
+        int sum_of_costs;
+    };
+
+
     vector<Agent> agents;
     list<IterationStats> iteration_stats; //stats about each iteration
     double preprocessing_time = 0;
